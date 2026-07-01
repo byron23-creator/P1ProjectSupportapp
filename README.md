@@ -2,6 +2,10 @@
 
 Sistema de gestión de tickets de soporte técnico con dos niveles de atención (L1 y L2). Los agentes L1 crean y atienden los tickets iniciales; cuando un caso lo requiere, lo escalan a L2, donde queda visible únicamente para ese equipo hasta su cierre. Cada ticket puede exportarse como reporte en PDF.
 
+## Link Video de muestra
+
+https://drive.google.com/file/d/1IpMlrAPR6cnABYuRNrXTEd_3qgkHJVPj/view?usp=drive_link
+
 ## Arquitectura
 
 El proyecto sigue Clean Architecture, separado en 4 proyectos independientes:
