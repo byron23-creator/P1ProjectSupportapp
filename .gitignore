@@ -25,7 +25,3 @@ Thumbs.db
 # IDE files
 .vscode/settings.json
 .idea/
-
-# README (not required)
-README.md
-readme.md

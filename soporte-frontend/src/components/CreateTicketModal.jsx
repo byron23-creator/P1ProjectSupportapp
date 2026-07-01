@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ticketsApi } from '../services/api.js';
+import React, { useState, useEffect } from 'react';
+import { ticketsApi, productsApi } from '../services/api.js';
 
 const TICKET_TYPES = [
   'Incidente',
@@ -33,8 +33,23 @@ export default function CreateTicketModal({ onClose, onCreated }) {
     impact:      IMPACT_LEVELS[2], // default: Medio
   });
 
-  const [error,   setError]   = useState('');
-  const [loading, setLoading] = useState(false);
+  const [error,    setError]    = useState('');
+  const [loading,  setLoading]  = useState(false);
+  const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  useEffect(() => {
+    productsApi
+      .getAll()
+      .then((data) => {
+        setProducts(data);
+        if (data.length > 0) {
+          setForm((prev) => ({ ...prev, productId: data[0].productId }));
+        }
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoadingProducts(false));
+  }, []);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -89,19 +104,28 @@ export default function CreateTicketModal({ onClose, onCreated }) {
         {error && <div className="alert alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit} noValidate>
-          {/* Product ID */}
+          {/* Product */}
           <div className="form-group">
-            <label htmlFor="productId">ID del Producto *</label>
-            <input
+            <label htmlFor="productId">Producto *</label>
+            <select
               id="productId"
               name="productId"
-              type="text"
               className="form-control"
-              placeholder="UUID del producto"
               value={form.productId}
               onChange={handleChange}
+              disabled={loadingProducts || products.length === 0}
               required
-            />
+            >
+              {loadingProducts && <option value="">Cargando productos…</option>}
+              {!loadingProducts && products.length === 0 && (
+                <option value="">No hay productos disponibles</option>
+              )}
+              {products.map((p) => (
+                <option key={p.productId} value={p.productId}>
+                  {p.productName}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Subject */}

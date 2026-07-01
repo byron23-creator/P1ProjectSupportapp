@@ -58,6 +58,12 @@ export const ticketsApi = {
     apiClient.get(`/tickets/${id}/pdf`, { responseType: 'blob' }).then((r) => r.data),
 };
 
+// ── Products ──────────────────────────────────────────────────────────────────
+export const productsApi = {
+  getAll: () =>
+    apiClient.get('/products').then((r) => r.data.data),
+};
+
 // ── Comments ──────────────────────────────────────────────────────────────────
 export const commentsApi = {
   getByTicket: (ticketId) =>
